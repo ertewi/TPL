@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-while (true) {
     echo "\n";
-    $input = trim(fgets(STDIN));
+    $input = "123 + 123";
     try {
         validate($input);
 
@@ -13,7 +12,6 @@ while (true) {
     } catch (Exception $e) {
         echo $e->getMessage();
     }
-}
 function validate(string $str): void {
     $str = trim($str);
     if (empty($str)) {
