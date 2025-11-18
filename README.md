@@ -2,7 +2,6 @@
 Theory of programming language class
 
 # Ready labs:
-1-2
+1-3
 
 # No def
-3
