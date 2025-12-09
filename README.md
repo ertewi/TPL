@@ -2,7 +2,7 @@
 Theory of programming language class
 
 # Ready labs:
-1-3
+1-4
+4 wrong MP
 
 # No def
-4
