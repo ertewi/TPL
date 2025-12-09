@@ -13,7 +13,7 @@ class DPDA:
         for (state, input_symbol, stack_top), (new_state, stack_operation, output_symbols) in self.transitions.items():
             print(f"  δ({state}, '{input_symbol}', '{stack_top}') = ({new_state}, '{stack_operation}', '{output_symbols}')")
 
-    def simulate(self, input_string, output_array):
+    def simulate(self, input_string, output_array, mode):
         state = self.start_state
         stack = [self.start_stack_symbol]
         input_index = 0
@@ -23,7 +23,7 @@ class DPDA:
             step += 1
             current_input = input_string[input_index] if input_index < len(input_string) else None
             output_display = current_input
-            if current_input is not None and re.match(r'[a-zA-Z0-9_]+$', current_input):
+            if mode == '1' and current_input is not None and re.match(r'[a-zA-Z0-9_]+$', current_input):
                 current_input = 'a'
             stack_top = stack[-1] if stack else None
 
@@ -43,7 +43,7 @@ class DPDA:
                 input_display = current_input
                 transition_found = True
                 input_index += 1
-                if current_input == 'a' and output_symbols == 'a':
+                if mode == '1' and current_input == 'a' and output_symbols == 'a':
                     output_array.append(output_display)
                 else:
                     output_array.append(output_symbols)
@@ -53,7 +53,7 @@ class DPDA:
                 new_state, stack_op, output_symbols = self.transitions[(state, 'λ', stack_top)]
                 input_display = 'λ'
                 transition_found = True
-                if current_input == 'a' and output_symbols == 'a':
+                if mode == '1' and current_input == 'a' and output_symbols == 'a':
                     output_array.append(output_display)
                 else:
                     output_array.append(output_symbols)
@@ -165,13 +165,18 @@ def main():
     print(f"Конечные состояния: {dpda.accepting_states}")
 
     while True:
-        input_string = input("\nВведите цепочку для проверки (или 'quit' для выхода): ")
-        output_array = []
-
-        if input_string.lower() == 'quit':
+        print("\nВыберите режим")
+        print("1. Обратная польская нотация")
+        print("2. Обычный преобразователь")
+        print("q. Выход")
+        mode = input(": ")
+        if mode.lower() == 'q':
             break
 
-        accepted, reason = dpda.simulate(input_string, output_array)
+        input_string = input("\nВведите цепочку для проверки: ")
+        output_array = []
+
+        accepted, reason = dpda.simulate(input_string, output_array, mode)
         output_array = list(map(lambda x: x if x != 'λ' else '', output_array))
         output_string = ''.join(output_array)
 
